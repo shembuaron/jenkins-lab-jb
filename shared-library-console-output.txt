@@ -1,0 +1,176 @@
+Started by user unknown or anonymous
+Loading library my-shared-library@main
+Attempting to resolve main from remote references...
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git ls-remote -h -- https://github.com/shembuaron/jenkins-lab-jb # timeout=10
+Found match: refs/heads/main revision 52eb278a08521a88ee42ad50582d6ba8786c0da2
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/pipeline_01@libs/d145467ee9f4a26a1b050f9186a8228638c21cd1a9e54e81221de50459726754/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/shembuaron/jenkins-lab-jb # timeout=10
+Fetching without tags
+Fetching upstream changes from https://github.com/shembuaron/jenkins-lab-jb
+ > git --version # timeout=10
+ > git --version # 'git version 2.47.3'
+ > git fetch --no-tags --force --progress -- https://github.com/shembuaron/jenkins-lab-jb +refs/heads/*:refs/remotes/origin/* # timeout=10
+Checking out Revision 52eb278a08521a88ee42ad50582d6ba8786c0da2 (main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 52eb278a08521a88ee42ad50582d6ba8786c0da2 # timeout=10
+Commit message: "Update Jenkinsfile"
+ > git rev-list --no-walk 52eb278a08521a88ee42ad50582d6ba8786c0da2 # timeout=10
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Still waiting to schedule task
+‘k8s-agent-2ngtz’ is offline
+Agent k8s-agent-2ngtz is provisioned from template k8s-agent
+---
+apiVersion: "v1"
+kind: "Pod"
+metadata:
+  annotations:
+    kubernetes.jenkins.io/last-refresh: "1781202941158"
+  labels:
+    jenkins: "slave"
+    jenkins/label-digest: "473a482a407b4e94431fa6c91771a41ca17750f6"
+    jenkins/label: "k8s-agent"
+    kubernetes.jenkins.io/controller: "http___jenkins-service_jenkins_svc_cluster_local_8081x"
+  name: "k8s-agent-2ngtz"
+  namespace: "jenkins"
+spec:
+  containers:
+  - command:
+    - "cat"
+    image: "alpine/git:latest"
+    imagePullPolicy: "IfNotPresent"
+    name: "git"
+    resources: {}
+    tty: true
+    volumeMounts:
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  - command:
+    - "cat"
+    image: "mcr.microsoft.com/dotnet/sdk:8.0"
+    imagePullPolicy: "IfNotPresent"
+    name: "dotnet"
+    resources: {}
+    tty: true
+    volumeMounts:
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  - command:
+    - "cat"
+    image: "gcr.io/kaniko-project/executor:debug"
+    imagePullPolicy: "IfNotPresent"
+    name: "kaniko"
+    resources: {}
+    tty: true
+    volumeMounts:
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  - command:
+    - "cat"
+    image: "dtzar/helm-kubectl:latest"
+    imagePullPolicy: "IfNotPresent"
+    name: "kubectl"
+    resources: {}
+    tty: true
+    volumeMounts:
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  - env:
+    - name: "JENKINS_SECRET"
+      value: "********"
+    - name: "JENKINS_TUNNEL"
+      value: "jenkins-service.jenkins.svc.cluster.local:50000"
+    - name: "JENKINS_AGENT_NAME"
+      value: "k8s-agent-2ngtz"
+    - name: "REMOTING_OPTS"
+      value: "-noReconnectAfter 1d"
+    - name: "JENKINS_NAME"
+      value: "k8s-agent-2ngtz"
+    - name: "JENKINS_AGENT_WORKDIR"
+      value: "/home/jenkins/agent"
+    - name: "JENKINS_URL"
+      value: "http://jenkins-service.jenkins.svc.cluster.local:8081/"
+    image: "jenkins/inbound-agent:latest"
+    imagePullPolicy: "IfNotPresent"
+    name: "jnlp"
+    resources: {}
+    tty: false
+    volumeMounts:
+    - mountPath: "/home/jenkins/agent"
+      name: "workspace-volume"
+      readOnly: false
+  nodeSelector:
+    kubernetes.io/os: "linux"
+  restartPolicy: "Never"
+  serviceAccountName: "jenkins-admin"
+  volumes:
+  - emptyDir:
+      medium: ""
+    name: "workspace-volume"
+
+Running on k8s-agent-2ngtz in /home/jenkins/agent/workspace/pipeline_01
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] echo
+Now building the application...
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] echo
+Now deploying the application on branch: develop...
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Approve Deployment)
+[Pipeline] timeout
+Timeout set to expire in 5 min 0 sec
+[Pipeline] {
+[Pipeline] script
+[Pipeline] {
+[Pipeline] input
+Input requested
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // timeout
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] echo
+Cleaning up after build and deployment...
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] echo
+Deployment successful
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
