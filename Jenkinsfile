@@ -1,3 +1,6 @@
+// Jenkinsfile for anything that isn't app-generator. The logic for user input is there but I did not implement the actual app as
+// this is all a mockup, so the part about logging and exiting isn't quite relevant but the core is there, hope it's enough
+
 @Library('my-shared-library') _
 
 pipeline {
